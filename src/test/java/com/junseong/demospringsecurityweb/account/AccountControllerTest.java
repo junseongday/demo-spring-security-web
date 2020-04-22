@@ -118,4 +118,12 @@ public class AccountControllerTest {
                 .build();
         return accountService.createNew(account);
     }
+
+    @Test
+    @WithUser
+    public void dashboard_user() throws Exception{
+        mockMvc.perform(get("/dashboard"))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
 }
