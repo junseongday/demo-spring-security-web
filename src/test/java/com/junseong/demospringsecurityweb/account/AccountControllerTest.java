@@ -6,6 +6,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -120,10 +122,22 @@ public class AccountControllerTest {
     }
 
     @Test
-    @WithUser
     public void dashboard_user() throws Exception{
-        mockMvc.perform(get("/dashboard"))
+        // given
+        String username = "junseong";
+        String password = "123";
+        Account account = createUser(username, password);
+
+        // when
+        mockMvc.perform(formLogin().user(username).password(password))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(authenticated());
+
+        // then
+//        UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        System.out.println(principal);
+//        mockMvc.perform(get("/dashboard").with(user(principal)))
+//                .andDo(print())
+//                .andExpect(status().isOk());
     }
 }
