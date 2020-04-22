@@ -1,11 +1,12 @@
 package com.junseong.demospringsecurityweb.account;
 
 import lombok.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 
 @Entity @NoArgsConstructor @AllArgsConstructor
-@Getter @Setter @ToString
+@Getter @Setter @ToString @Builder
 public class Account {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -15,7 +16,7 @@ public class Account {
     private String role;
 
 
-    public void encodePasswod() {
-        this.password = "{noop}" + this.password;
+    public void encodePasswod(PasswordEncoder passwordEncoder) {
+        this.password = passwordEncoder.encode(this.password);
     }
 }
