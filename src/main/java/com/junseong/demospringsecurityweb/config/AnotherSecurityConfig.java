@@ -8,7 +8,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 @Configuration
-@EnableWebSecurity
 @Order(Ordered.LOWEST_PRECEDENCE - 100)
 public class AnotherSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
