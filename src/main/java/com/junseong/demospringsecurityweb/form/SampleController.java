@@ -9,8 +9,12 @@ import java.security.Principal;
 @Controller
 public class SampleController {
     @GetMapping("/")
-    public String index(Model model){
-        model.addAttribute("message", "Hello Spring Security");
+    public String index(Model model, Principal principal){
+        if(principal == null) {
+            model.addAttribute("message", "Hello Spring Security");
+        } else {
+            model.addAttribute("message", "Hello, "+ principal.getName());
+        }
         return "index";
     }
     @GetMapping("/info")
@@ -20,12 +24,12 @@ public class SampleController {
     }
     @GetMapping("/dashboard")
     public String dashboard(Model model, Principal principal){
-        model.addAttribute("message", "Hello"+ principal.getName());
+        model.addAttribute("message", "Hello, "+ principal.getName());
         return "dashboard";
     }
     @GetMapping("/admin")
     public String adnub(Model model, Principal principal){
-        model.addAttribute("message", "Hello Admin"+ principal.getName());
+        model.addAttribute("message", "Hello Admin, "+ principal.getName());
         return "admin";
     }
 }
