@@ -1,5 +1,7 @@
 package com.junseong.demospringsecurityweb.config;
 
+import com.junseong.demospringsecurityweb.account.AccountService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -24,6 +26,9 @@ import java.io.IOException;
 @Configuration
 @Order(Ordered.LOWEST_PRECEDENCE - 50)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    AccountService accountService;
 
     public SecurityExpressionHandler expressionHandler() {
 
@@ -59,6 +64,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.logout()
                 .logoutSuccessUrl("/");
+
+        http.rememberMe()
+                .userDetailsService(accountService)
+                .key("remember-me-sample");
 
         // TODO ExceptionTranslatorFilter -> FilterSEcurityInterceptor (AccessDecisionManager, Affirmativebase)
         // TODO AuthenticationException -> AuthenticationEntryPoint
