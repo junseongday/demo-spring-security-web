@@ -1,6 +1,7 @@
 package com.junseong.demospringsecurityweb.config;
 
 import com.junseong.demospringsecurityweb.account.AccountService;
+import com.junseong.demospringsecurityweb.common.LoggingFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Configuration;
@@ -16,6 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -48,6 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.addFilterAfter(new LoggingFilter(), UsernamePasswordAuthenticationFilter.class);
         http
                 .authorizeRequests()
                 .mvcMatchers("/", "/info", "/signup").permitAll()
