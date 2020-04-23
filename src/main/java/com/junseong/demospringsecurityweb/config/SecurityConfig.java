@@ -43,8 +43,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .expressionHandler(expressionHandler())
         ;
-        http.formLogin();
+        http.formLogin()
+                .loginPage("/login")
+                .permitAll()
+
+        ;
         http.httpBasic();
+        http.logout()
+                .logoutSuccessUrl("/");
 
         // 비동기 상황에서 현제 스레드에서 하위 스레드로 SecurityContextHolder 공유
         SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
