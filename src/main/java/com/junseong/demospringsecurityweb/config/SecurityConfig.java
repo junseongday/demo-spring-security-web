@@ -40,17 +40,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .mvcMatchers("/", "/info", "/signup").permitAll()
                 .mvcMatchers("/admin").hasRole("ADMIN")
                 .mvcMatchers("/user").hasRole("USER")
+//                .mvcMatchers("/login").anonymous()
                 .anyRequest().authenticated()
                 .expressionHandler(expressionHandler())
         ;
         http.formLogin()
-                .loginPage("/login")
-                .permitAll()
-
+                .loginPage("/login").permitAll()
         ;
         http.httpBasic();
+
         http.logout()
                 .logoutSuccessUrl("/");
+
+        // TODO ExceptionTranslatorFilter -> FilterSEcurityInterceptor (AccessDecisionManager, Affirmativebase)
+        // TODO AuthenticationException -> AuthenticationEntryPoint
+        // TODO AccessDeniedException -> AccessDeniedHandler*******
+        http.exceptionHandling()
+                .accessDeniedPage("/access-deined");
+
 
         // 비동기 상황에서 현제 스레드에서 하위 스레드로 SecurityContextHolder 공유
         SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
